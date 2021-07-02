@@ -1,27 +1,28 @@
-import { Component } from "react";
-import Desc from "./views/Desc";
-import Tes from "./views/Tes";
-import { Route, Router } from "react-router";
-import { Link } from "react-router-dom";
+import { Component,Suspense } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Spin } from "antd";
+import config from "./config";
+// import "./styles/index.less";
+import { layoutRouteList } from "./router/utils";
+import { IRoute } from "./router/config";
+
 class App extends Component<any, any> {
   render() {
     return (
-      <>
-        <h2>hello </h2>
-        <Desc name="cyq" />
-        <Tes />
-        <ul>
-          <li>
-            <Link to="/desc">desc</Link>
-          </li>
-          <li>
-            <Link to="/tes">tes</Link>
-          </li>
-        </ul>
-        <ul>
-          <li></li>
-        </ul>
-      </>
+      <Suspense fallback={<Spin size="large" className="layout__loading" />}>
+        <Router basename={config.BASE_NAME}>
+          <Switch>
+            {layoutRouteList.map((route: IRoute) => (
+              <Route
+                key={config.BASE_NAME + route.path}
+                path={route.path}
+                component={route.component}
+                exact
+              ></Route>
+            ))}
+          </Switch>
+        </Router>
+      </Suspense>
     );
   }
 }
