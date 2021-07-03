@@ -16,9 +16,6 @@ export function flattenRoute(
 
   for (let i = 0; i < routeList.length; i += 1) {
     const route = routeList[i];
-    console.log("auth= ", auth);
-    console.log("route auto= ", route.auth);
-
     result.push({
       ...route,
 

@@ -1,7 +1,7 @@
-import { UserSate } from "./module/user/user";
+import { UserState } from "./module/user";
 
 export interface IStoreState {
-  user: UserSate;
+  user: UserState;
 }
 
 export interface IAction<T> {

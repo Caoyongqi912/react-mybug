@@ -1,3 +1,4 @@
+import { UserState } from "../../store/module/user";
 import { request } from "../request"
 
 
@@ -7,7 +8,7 @@ export interface userLoginData {
 }
 
 export function apiUserLogin(data: userLoginData) {
-    return request({
+    return request<UserState>({
         method: "POST",
         url: "login",
         data

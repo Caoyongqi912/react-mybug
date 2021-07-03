@@ -8,7 +8,7 @@ import {
 import reduxThunk from "redux-thunk";
 import reduxLogger from "redux-logger";
 import { IStoreState, IAction } from "./types";
-import userReducer from "./module/user/user";
+import userReducer from "./module/user";
 
 const reducers: Reducer<
   IStoreState,

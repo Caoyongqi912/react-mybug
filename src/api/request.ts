@@ -2,8 +2,10 @@ import axios, { AxiosRequestConfig, AxiosError, AxiosResponse } from "axios";
 import AdminConfig from "../config";
 import { Modal } from "antd";
 import { getToken } from "../utils/cookie";
+import store from "../store";
+import { logout } from "../store/module/user";
 
-interface ResponseData<T> {
+export interface ResponseData <T> {
   code: number;
   data: T;
   msg: string;
@@ -32,7 +34,7 @@ axios.interceptors.request.use(
 //inter res
 
 axios.interceptors.response.use(
-    (response: AxiosResponse<ResponseData<any>>) => {
+  (response: AxiosResponse<ResponseData<any>>) => {
     if (!response.data) {
       return Promise.reject(response);
     }
@@ -46,18 +48,19 @@ axios.interceptors.response.use(
         okText: "GO LOGIN",
         onOk() {
           // store
-          console.log("go login");
+          store.dispatch(logout());
+
         },
-        // oncancel() { },
+        onCancel() { },
       });
       return Promise.reject(new Error(response.data.msg));
     }
     // 请求成功
-        if (response.data.code === AdminConfig.SUCCESS_CODE) {
-        console.log(response.data)
-      return response.data as any;
+    if (response.data.code === AdminConfig.SUCCESS_CODE) {
+      console.log(response.data)
+      return response.data as any;  
     }
-      return Promise.reject(new Error(response.data.msg));
+    return Promise.reject(new Error(response.data.msg));
   },
   (error: AxiosError) => {
 

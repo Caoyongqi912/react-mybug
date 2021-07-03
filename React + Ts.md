@@ -94,7 +94,7 @@ yarn add antd
   - 能让你像渲染常规组件一样处理动态引入
 
   ```react
-  const OtherComponent = Resac.lazy(()=> import("./OtherCopmonent"))
+  const OtherComponent = React.lazy(()=> import("./OtherCopmonent"))
   ```
 
   - 此代码会在组件首次渲染时，自动导入包含`OtherComponent`组件的包

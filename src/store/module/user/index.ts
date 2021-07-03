@@ -3,33 +3,33 @@ import { IAction } from "../../types";
 import { getToken, setToken, removeToken } from "../../../utils/cookie";
 import { UserType } from "./usertype";
 import LocalStore from "../../../utils/store";
-export interface UserSate {
+export interface UserState {
   token: string;
   account: string;
   id: number;
   role: number;
 }
 
-const initUser: UserSate = {
+const initUser: UserState = {
   token: getToken(),
   account: "",
   id: 0,
   role: 0,
 };
 
-export const setUserInfo: (user: UserSate) => IAction<UserSate> = (
-  user: UserSate
+export const setUserInfo: (user: UserState) => IAction<UserState> = (
+  user: UserState
 ) => ({
   type: UserType.SET_USER_INFO,
   payload: user,
 });
 
 export const logout: () => IAction<null> = () => ({
-  type: UserType.USET_LOGOUT,
+  type: UserType.USER_LOGOUT,
   payload: null,
 });
 
-const userReducer: Reducer<UserSate, IAction<any>> = (
+const userReducer: Reducer<UserState, IAction<any>> = (
   state = initUser,
   actions: IAction<any>
 ) => {
@@ -41,7 +41,7 @@ const userReducer: Reducer<UserSate, IAction<any>> = (
       return {
         ...payload,
       };
-    case UserType.USET_LOGOUT:
+    case UserType.USER_LOGOUT:
       removeToken();
       LocalStore.removeValue(UserType.USER_KEY);
       return {

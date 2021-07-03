@@ -5,7 +5,7 @@ import config from "./config";
 // import "./styles/index.less";
 import { layoutRouteList } from "./router/utils";
 import { IRoute } from "./router/config";
-
+import "./App.css"
 class App extends Component<any, any> {
   render() {
     return (
