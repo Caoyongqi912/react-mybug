@@ -26,7 +26,6 @@ export function flattenRoute(
       result.push(...flattenRoute(route.children, deep, auth));
     }
   }
-  console.log(result)
   return result;
 }
 

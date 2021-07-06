@@ -1,10 +1,11 @@
-import { Component, CSSProperties, RefObject } from "react";
+import { Component, RefObject } from "react";
 import { apiUserLogin, userLoginData } from "../api/user";
 import { RouteComponentProps } from "react-router-dom";
 import { UserState, setUserInfo } from "../store/module/user";
 import { connect } from 'react-redux';
 import { Form, Input, Button, FormInstance, message } from 'antd';
 import { createRef } from "react";
+import { CSSProperties } from "react";
 
 
 interface LoginProps extends RouteComponentProps {
@@ -33,7 +34,6 @@ class Login extends Component<LoginProps> {
 
 
   onFinish = (form: userLoginData) => {
-    console.log(form)
     apiUserLogin(form)
     .then(({ data }: { data: UserState })=> {
       message.success("success")
@@ -59,7 +59,7 @@ class Login extends Component<LoginProps> {
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 5 }}
           initialValues={{ remember: true }}
-          // style= {loginFormStyle}
+          style= {loginFormStyle}
           onFinish={this.onFinish}
           onFinishFailed={this.onFinishFailed}
           
@@ -90,14 +90,11 @@ class Login extends Component<LoginProps> {
     );
   }
 }
+const loginFormStyle: CSSProperties={
+  marginTop: "100px",
+  marginRight:"70px"
+}
+
 export default connect(() => ({}), {
   setUserInfo,
 })(Login);
-
-
-
-const loginFormStyle :CSSProperties= {
-  textAlign:'center'
-
-  
-}

@@ -21,6 +21,7 @@ const routes: IRoute[] = [
   {
     path: "/",
     component: React.lazy(() => import("../views/Dashboard")),
+    auth: true,
     meta: {
       title: "首页",
     },
@@ -28,6 +29,7 @@ const routes: IRoute[] = [
   {
     path: "/login",
     component: React.lazy(() => import("../views/Login")),
+    auth: false,
     meta: {
       title: "登录",
     },

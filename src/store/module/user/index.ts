@@ -1,7 +1,7 @@
 import { Reducer } from "redux";
 import { IAction } from "../../types";
 import { getToken, setToken, removeToken } from "../../../utils/cookie";
-import { UserType } from "./usertype";
+import { UserType } from "./types";
 import LocalStore from "../../../utils/store";
 export interface UserState {
   token: string;
@@ -10,11 +10,14 @@ export interface UserState {
   role: number;
 }
 
+const localUser = LocalStore.getValue<UserState>(UserType.USER_KEY) || {}
+
 const initUser: UserState = {
   token: getToken(),
   account: "",
   id: 0,
   role: 0,
+  ...localUser
 };
 
 export const setUserInfo: (user: UserState) => IAction<UserState> = (
@@ -38,6 +41,7 @@ const userReducer: Reducer<UserState, IAction<any>> = (
     case UserType.SET_USER_INFO:
       setToken(payload.token);
       LocalStore.setValue(UserType.USER_KEY, payload);
+      console.log(payload)
       return {
         ...payload,
       };

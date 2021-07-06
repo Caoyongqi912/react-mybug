@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 
-const SiderComponent = React.lazy(() => import("../components/SiderComponent"))
+const MyLayout = React.lazy(() => import("../components/Layout"));
 
 export default class Dashboard extends Component {
   render() {
-    return (<SiderComponent />
-    )
+    return <MyLayout />;
   }
 }
