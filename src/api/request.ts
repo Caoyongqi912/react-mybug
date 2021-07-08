@@ -41,7 +41,6 @@ axios.interceptors.response.use(
 
     // 登录过期或未登录 
     if (response.data.code === AdminConfig.LOGIN_EXPIRE) {
-      console.log("login expire");
       Modal.confirm({
         title: "系统提示",
         content: response.data.msg,
@@ -57,7 +56,6 @@ axios.interceptors.response.use(
     }
     // 请求成功
     if (response.data.code === AdminConfig.SUCCESS_CODE) {
-      console.log(response.data)
       return response.data as any;  
     }
     return Promise.reject(new Error(response.data.msg));

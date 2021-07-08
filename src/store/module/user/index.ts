@@ -4,9 +4,11 @@ import { getToken, setToken, removeToken } from "../../../utils/cookie";
 import { UserType } from "./types";
 import LocalStore from "../../../utils/store";
 export interface UserState {
+  department?: number | null;
   token: string;
   account: string;
-  id: number;
+  name: string;
+  uid: number | null;
   role: number;
 }
 
@@ -15,7 +17,8 @@ const localUser = LocalStore.getValue<UserState>(UserType.USER_KEY) || {}
 const initUser: UserState = {
   token: getToken(),
   account: "",
-  id: 0,
+  name:"",
+  uid: null,
   role: 0,
   ...localUser
 };
@@ -41,7 +44,6 @@ const userReducer: Reducer<UserState, IAction<any>> = (
     case UserType.SET_USER_INFO:
       setToken(payload.token);
       LocalStore.setValue(UserType.USER_KEY, payload);
-      console.log(payload)
       return {
         ...payload,
       };

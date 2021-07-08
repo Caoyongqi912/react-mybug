@@ -10,8 +10,6 @@ import { UserState } from "../src/store/module/user";
 
 class App extends Component<any, any> {
   render() {
-    let token = this.props.token;
-    console.log("token ", token);
     return (
       <Suspense fallback={<Spin size="large" />}>
         <Router basename={config.BASE_NAME}>
@@ -31,8 +29,6 @@ class App extends Component<any, any> {
   }
 }
 const mapStateToProps = (state: UserState, myProps: any) => {
-  console.log("token", state.token);
-  console.log("myProps", myProps);
   return { token: state.token };
 };
 
