@@ -6,13 +6,13 @@ import { connect } from "react-redux";
 import { IStoreState } from "src/store/types";
 import { useHistory } from "react-router-dom";
 import { LogoutOutlined, EditOutlined, MehOutlined } from "@ant-design/icons";
+import { ClickParam } from "./type";
+
 interface IDrop {
   account: string;
   setUserInfo: (user: UserState) => void;
 }
-interface ClickParam {
-  key: string;
-}
+
 
 function DropIterm(onMenuClick: (param: ClickParam) => void) {
   return (
@@ -53,7 +53,7 @@ function MyDrop(props: IDrop) {
   }, []);
 
   return (
-    <Dropdown overlay={DropIterm(handleMenuClick)} trigger={["hover"]}>
+    <Dropdown overlay={DropIterm(handleMenuClick)} trigger={["hover"]} placement={"bottomCenter"}>
       <div>
         <Avatar style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}>
           {props.account[0]}

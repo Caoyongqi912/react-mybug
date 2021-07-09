@@ -7,30 +7,32 @@ const MyProject: FC = () => {
   const [listData, setlistData] = useState<IProject[]>();
 
   const getProjectData = async () => {
-    const { data } = await getProjectInfo();
-    setlistData(data);
+    try {
+      const { data } = await getProjectInfo();
+      setlistData(data);
+    } catch (error) {}
   };
 
   useEffect(() => {
     getProjectData();
   }, []);
-    return (
-      <Col span={11}>
-        <Card hoverable={true} title={"项目"}>
-          <List
-            itemLayout="horizontal"
-            dataSource={listData}
-            renderItem={(item) => (
-              <List.Item>
-                <List.Item.Meta
-                  title={<a href={item.id.toString()}>{item.name}</a>}
-                />
-              </List.Item>
-            )}
-          ></List>
-        </Card>
-      </Col>
-    );
+  return (
+    <Col span={11}>
+      <Card hoverable={true} title={"项目"}>
+        <List
+          itemLayout="horizontal"
+          dataSource={listData}
+          renderItem={(item) => (
+            <List.Item>
+              <List.Item.Meta
+                title={<a href={item.id.toString()}>{item.name}</a>}
+              />
+            </List.Item>
+          )}
+        ></List>
+      </Card>
+    </Col>
+  );
 };
 
 export default memo(MyProject);

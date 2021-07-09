@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosError, AxiosResponse } from "axios";
 import AdminConfig from "../config";
-import { Modal } from "antd";
+import { message, Modal } from "antd";
 import { getToken } from "../utils/cookie";
 import store from "../store";
 import { logout } from "../store/module/user";
@@ -38,7 +38,6 @@ axios.interceptors.response.use(
     if (!response.data) {
       return Promise.reject(response);
     }
-
     // 登录过期或未登录
     if (response.data.code === AdminConfig.LOGIN_EXPIRE) {
       Modal.confirm({
@@ -48,6 +47,10 @@ axios.interceptors.response.use(
         onOk() {
           // store
           store.dispatch(logout());
+
+          window.location.href = `${
+            window.location.origin
+          }/login?redirectURL=${encodeURIComponent(window.location.href)}`;
         },
         onCancel() {},
       });
@@ -57,6 +60,7 @@ axios.interceptors.response.use(
     if (response.data.code === AdminConfig.SUCCESS_CODE) {
       return response.data as any;
     }
+    message.error(response.data.msg);
     return Promise.reject(new Error(response.data.msg));
   },
   (error: AxiosError) => {

@@ -7,8 +7,13 @@ function MyProduct() {
   const [listData, setListData] = useState<IProduct[]>();
 
   const getProductInfos = async () => {
-    const { data } = await getProduct();
+    try {
+      const { data } = await getProduct();
     setListData(data);
+    } catch (error) {
+      
+    }
+    
   };
 
   useEffect(() => {
