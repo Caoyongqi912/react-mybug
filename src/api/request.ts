@@ -5,7 +5,7 @@ import { getToken } from "../utils/cookie";
 import store from "../store";
 import { logout } from "../store/module/user";
 
-export interface ResponseData <T> {
+export interface ResponseData<T> {
   code: number;
   data: T;
   msg: string;
@@ -24,7 +24,7 @@ axios.interceptors.request.use(
   (config: AxiosRequestConfig) => {
     const token = getToken();
     if (token) {
-      config.headers.token = token;
+      config.auth = { username: token, password: "" };
     }
     return config;
   },
@@ -39,7 +39,7 @@ axios.interceptors.response.use(
       return Promise.reject(response);
     }
 
-    // 登录过期或未登录 
+    // 登录过期或未登录
     if (response.data.code === AdminConfig.LOGIN_EXPIRE) {
       Modal.confirm({
         title: "系统提示",
@@ -48,20 +48,18 @@ axios.interceptors.response.use(
         onOk() {
           // store
           store.dispatch(logout());
-
         },
-        onCancel() { },
+        onCancel() {},
       });
       return Promise.reject(new Error(response.data.msg));
     }
     // 请求成功
     if (response.data.code === AdminConfig.SUCCESS_CODE) {
-      return response.data as any;  
+      return response.data as any;
     }
     return Promise.reject(new Error(response.data.msg));
   },
   (error: AxiosError) => {
-
     return Promise.reject(error);
   }
 );

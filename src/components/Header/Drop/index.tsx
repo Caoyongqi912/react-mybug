@@ -1,12 +1,11 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { memo, useCallback } from "react";
+import { memo, useCallback } from "react";
 import { Dropdown, Menu, Avatar } from "antd";
 import { removeToken } from "../../../utils/cookie";
 import { UserState, setUserInfo } from "../../../store/module/user";
 import { connect } from "react-redux";
 import { IStoreState } from "src/store/types";
 import { useHistory } from "react-router-dom";
-import { LogoutOutlined } from "@ant-design/icons";
+import { LogoutOutlined, EditOutlined, MehOutlined } from "@ant-design/icons";
 interface IDrop {
   account: string;
   setUserInfo: (user: UserState) => void;
@@ -18,6 +17,14 @@ interface ClickParam {
 function DropIterm(onMenuClick: (param: ClickParam) => void) {
   return (
     <Menu selectedKeys={[]} onClick={onMenuClick}>
+      <Menu.Item key="mine">
+        <MehOutlined />
+        个人
+      </Menu.Item>
+      <Menu.Item key="setting">
+        <EditOutlined />
+        设置
+      </Menu.Item>
       <Menu.Divider />
       <Menu.Item key="logout">
         <LogoutOutlined />
@@ -48,8 +55,9 @@ function MyDrop(props: IDrop) {
   return (
     <Dropdown overlay={DropIterm(handleMenuClick)} trigger={["hover"]}>
       <div>
-        <Avatar size="small" src="../../../assert/ava.jpeg" alt="avatar" />
-        <span>  {props.account}</span>
+        <Avatar style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}>
+          {props.account[0]}
+        </Avatar>
       </div>
     </Dropdown>
   );

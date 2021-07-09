@@ -167,4 +167,48 @@ yarn add antd
     }
     ```
 
-    
+
+
+
+#### React.memo()
+
+用来控制函数组件重新渲染 === `PureComponent`
+
+
+
+```react
+function MyDrop(props: IDrop) {
+  const history = useHistory();
+
+  const handleMenuClick = useCallback(({ key }: ClickParam) => {
+    if (key === "logout") {
+      removeToken();
+      props.setUserInfo({
+        name: "",
+        token: "",
+        account: "",
+        department: null,
+        role: 0,
+        uid: null,
+      });
+      history.replace("/login");
+    }
+  }, []);
+
+  return (
+    <Dropdown overlay={DropIterm(handleMenuClick)} trigger={["hover"]}>
+      <div>
+        <Avatar style={{ color: "#f56a00", backgroundColor: "#fde3cf" }}>
+          {props.account[0]}
+        </Avatar>
+      </div>
+    </Dropdown>
+  );
+}
+
+export default connect(({ user: { account } }: IStoreState) => ({ account }), {
+  setUserInfo,
+})(memo(MyDrop));
+
+```
+
