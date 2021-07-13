@@ -1,9 +1,11 @@
-import { CSSProperties, useCallback,FC } from "react";
-import { apiUserLogin } from "./../api/user";
+import { CSSProperties, FC } from "react";
+import { apiUserLogin } from "../../api/user";
 import { RouteComponentProps } from "react-router-dom";
-import { UserState, setUserInfo } from "../store/module/user";
+import { UserState, setUserInfo } from "../../store/module/user";
 import { connect } from "react-redux";
 import { Form, Input, Button, message } from "antd";
+import { useState } from "react";
+import qs from "query-string";
 
 interface LoginProps extends RouteComponentProps {
   setUserInfo: (userInfo: UserState) => void;
@@ -14,36 +16,37 @@ interface FormProps {
   password?: string;
 }
 
-const MyLogin: FC<LoginProps> = (props: LoginProps) =>{
+/**
+ * 登录
+ * @param param0
+ * @param props 
+ * @returns 
+ */
+const MyLogin: FC<LoginProps> = ({ history, location }, props) => {
+  console.log("login")
   const [form] = Form.useForm();
-  const next = () => {
-    const params = new URLSearchParams(window.location.search);
-    const redirectURL = params.get("redirectURL");
-    if (redirectURL) {
-      window.location.href = redirectURL;
-      return;
-    }
-    props.history.push("/");
-  };
+  const [redirectUrl] = useState(() => {
+    const url = qs.parse(location.search).redirectUrl as string;
+    return url || "/home/index";
+  });
 
-  const onFinish = useCallback(() => {
+  const onFinish = async () => {
     form.validateFields().then((res) => {
       const values = res as FormProps;
       if (values.account && values.password) {
         apiUserLogin({ account: values.account, password: values.password })
           .then(({ data }: { data: UserState }) => {
             props.setUserInfo(data);
-            message.success("login success")
-            next();
+            message.success("login success");
+            history.replace(redirectUrl);
           })
           .catch((e) => {
-            console.log(e)
-            message.error(e)
+            console.log(e);
           });
         return;
       }
     });
-  }, []);
+  };
 
   return (
     <Form
@@ -55,7 +58,6 @@ const MyLogin: FC<LoginProps> = (props: LoginProps) =>{
       initialValues={{ remember: true }}
       style={loginFormStyle}
       onFinish={onFinish}
-      //  onFinishFailed={onFinishFailed}
     >
       <Form.Item
         label="Account"
@@ -80,12 +82,13 @@ const MyLogin: FC<LoginProps> = (props: LoginProps) =>{
       </Form.Item>
     </Form>
   );
-}
+};
 export default connect(() => ({}), {
   setUserInfo,
 })(MyLogin);
 
-const loginFormStyle: CSSProperties={
+const loginFormStyle: CSSProperties = {
   marginTop: "200px",
-  marginLeft:"100px"
-}
+  marginLeft: "100px",
+  minHeight: "100vh",
+};

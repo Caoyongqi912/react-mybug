@@ -1,6 +1,6 @@
 import { memo, useCallback } from "react";
 import { ClickParam } from "./type";
-import { Dropdown, Menu, Avatar } from "antd";
+import { Dropdown, Menu } from "antd";
 import { useHistory } from "react-router-dom";
 
 function DropIterm(onMenuClick: (param: ClickParam) => void) {

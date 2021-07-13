@@ -1,27 +1,78 @@
-import { CSSProperties, FC } from "react";
-import { Layout, Menu } from "antd";
-import MyDrop from "./Drop/myDrop";
-import UserDrop from "./Drop/userDrop";
-
+import { FC } from "react";
+import { Layout, Popover, Avatar } from "antd";
+import { UserState, setUserInfo } from "src/store/module/user";
+import { IHomeState } from "../Type";
+import {  RouteComponentProps,withRouter } from "react-router-dom";
+import {
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
+  PoweroffOutlined,
+} from "@ant-design/icons";
+import {
+  spanStyle,
+  divStyle,
+  MenuStyle,
+  ulStyle,
+  AvaStyle,
+  logoutStyle,
+  signout,
+} from "./style";
+import { removeToken } from "src/utils/cookie";
+import { connect, DispatchProp } from "react-redux";
 const { Header } = Layout;
 
-const MyHeader: FC = () => {
+type Props = ReturnType<typeof mapStateToProps> &
+  IHomeState &
+  DispatchProp &
+  RouteComponentProps 
+
+const MyHeader: FC<Props> = ({ collapsed, setCollapsed, userInfo ,dispatch}) => {
+  const PopoverContent = (
+    <div style={{width:"200px"}}>
+      <div style={signout} onClick={() => logout()}>
+        <PoweroffOutlined style={logoutStyle} />
+        退出
+      </div>
+    </div>
+  );
+  // 登出
+  const logout = async () => {
+    removeToken();
+    dispatch(setUserInfo({
+      isLogin: false,
+      userInfo: {
+        account: "",
+        name: "",
+        uid: null,
+        role: 0,
+        location: "",
+        token:""
+      }
+    }))
+  };
   return (
     <Header>
-      <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["1"]}>
-        <Menu.Item key={1}>首页</Menu.Item>
-        <Menu.Item key={2}>
-          <UserDrop />
-        </Menu.Item>
-        <Menu.Item key={3} style={drop}>
-          <MyDrop />
-        </Menu.Item>
-      </Menu>
+      <div style={divStyle}>
+        {collapsed ? (
+          <MenuUnfoldOutlined onClick={setCollapsed} style={MenuStyle} />
+        ) : (
+          <MenuFoldOutlined onClick={setCollapsed} style={MenuStyle} />
+        )}
+      </div>
+      <ul style={ulStyle}>
+        <Popover placement="bottomRight" content={PopoverContent}>
+          <li>
+            <Avatar style={AvaStyle}>{userInfo.account[0]}</Avatar>
+            <span style={spanStyle}>{userInfo.account}</span>
+          </li>
+        </Popover>
+      </ul>
     </Header>
   );
 };
-export default MyHeader;
 
-const drop: CSSProperties = {
-  marginLeft: "auto",
+const mapStateToProps = ({ userInfo }: UserState) => {
+  return { userInfo: userInfo };
 };
+
+export default connect(mapStateToProps)(withRouter(MyHeader));

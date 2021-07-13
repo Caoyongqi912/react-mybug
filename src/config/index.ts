@@ -5,6 +5,7 @@ export interface Config {
   SUCCESS_CODE: number;
   LOGIN_EXPIRE: number;
   TOKEN_KEY: string;
+  SIDEBAR_COLLAPSED: string;
 }
 
 const AdminConfig: Config = {
@@ -14,6 +15,7 @@ const AdminConfig: Config = {
   LOGIN_EXPIRE: 401,
   TOKEN_KEY: "MYBUG_TOKEN",
   BASE_NAME: "MyBug",
+  SIDEBAR_COLLAPSED: "SIDEBAR_COLLAPSED",
 };
 
 export default AdminConfig;

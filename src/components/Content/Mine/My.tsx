@@ -14,7 +14,7 @@ function My(props: IMy) {
     <>
       <Row>
         <Col span={24}>
-          <Card hoverable={true} title={"hello " + props.account}>
+          <Card hoverable={true} title={"hello " + props}>
             ...
           </Card>
         </Col>
@@ -24,6 +24,6 @@ function My(props: IMy) {
   );
 }
 
-export default connect(({ user: { account } }: IStoreState) => ({ account }), {
-  setUserInfo,
-})(memo(My));
+// export default connect(({ user: { userinfo } }: IStoreState) => ({ userinfo }), {
+//   setUserInfo,
+// })(memo(My));

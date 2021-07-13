@@ -3,27 +3,38 @@ import { IAction } from "../../types";
 import { getToken, setToken, removeToken } from "../../../utils/cookie";
 import { UserType } from "./types";
 import LocalStore from "../../../utils/store";
-export interface UserState {
+import { isPlainObject } from "lodash";
+
+export interface UserInfo {
   department?: number | null;
-  token: string;
   account: string;
   name: string;
   uid: number | null;
+  token: string | null;
   role: number;
+  location: string;
+}
+export interface UserState {
+  userInfo: UserInfo;
+  isLogin: boolean;
 }
 
-const localUser = LocalStore.getValue<UserState>(UserType.USER_KEY) || {}
+const localUser = LocalStore.getValue<UserState>(UserType.USER_KEY) || {};
 
 const initUser: UserState = {
-  token: getToken(),
-  account: "",
-  name:"",
-  uid: null,
-  role: 0,
-  ...localUser
+  userInfo: {
+    token: getToken(),
+    account: "",
+    name: "",
+    uid: null,
+    role: 0,
+    location:""
+  },
+  isLogin: false,
+  ...localUser,
 };
 
-export const setUserInfo: (user: UserState) => IAction<UserState> = (
+export const setUserInfo: (user: UserState | any) => IAction<UserState> = (
   user: UserState
 ) => ({
   type: UserType.SET_USER_INFO,
@@ -35,11 +46,31 @@ export const logout: () => IAction<null> = () => ({
   payload: null,
 });
 
+
+//验证本地登录状态
+export function validateLocalStatus() {
+  let userInfo = {}
+  try {
+   userInfo = JSON.parse(
+     window.localStorage.getItem(UserType.USER_KEY) as string
+   );
+   //于判断指定参数是否是一个纯粹的对象
+   if (!isPlainObject(userInfo)) {
+     userInfo = {};
+   }
+  } catch {}
+  return setUserInfo(userInfo)
+}
+
+
+
+
 const userReducer: Reducer<UserState, IAction<any>> = (
   state = initUser,
   actions: IAction<any>
 ) => {
   const { type, payload } = actions;
+
   switch (type) {
     case UserType.SET_USER_INFO:
       setToken(payload.token);
@@ -57,6 +88,5 @@ const userReducer: Reducer<UserState, IAction<any>> = (
       return state;
   }
 };
-
 
 export default userReducer;
