@@ -22,8 +22,7 @@ interface FormProps {
  * @param props 
  * @returns 
  */
-const MyLogin: FC<LoginProps> = ({ history, location }, props) => {
-  console.log("login")
+const MyLogin: FC<LoginProps> = ({ history, location ,setUserInfo}) => {
   const [form] = Form.useForm();
   const [redirectUrl] = useState(() => {
     const url = qs.parse(location.search).redirectUrl as string;
@@ -36,7 +35,7 @@ const MyLogin: FC<LoginProps> = ({ history, location }, props) => {
       if (values.account && values.password) {
         apiUserLogin({ account: values.account, password: values.password })
           .then(({ data }: { data: UserState }) => {
-            props.setUserInfo(data);
+            setUserInfo(data);
             message.success("login success");
             history.replace(redirectUrl);
           })

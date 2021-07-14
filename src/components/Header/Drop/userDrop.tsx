@@ -16,11 +16,8 @@ function UserDrop() {
   const handleMenuClick = useCallback(({ key }: ClickParam) => {
     if (key === "mine") {
       history.replace("/mine");
-      console.log("mine");
     } else if (key === "setting") {
       history.replace("/setting");
-
-      console.log("setting");
     }
   }, []);
   return (

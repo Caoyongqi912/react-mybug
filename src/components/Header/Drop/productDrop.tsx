@@ -18,7 +18,6 @@ const ProductDrop: FC = () => {
     const handleMenuClick = useCallback(({ key }: ClickParam) => {
       if (key === "bug") {
         history.replace("/bug");
-        console.log("bug");
       }
     }, []);
      return (

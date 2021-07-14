@@ -17,13 +17,11 @@ const PrivateRoute: FC<Porps> = ({
   const { meta } = rest;
   const location = useLocation();
   const querySearch = location.search;
-
-
   // 权限
   const auth = (function () {
-    console.log("meta" + meta?.auth);
-    console.log("login: " + isLogin);
+    // 此路由是否需要权限
     if (meta?.auth) {
+      // 是否已登录
       if (isLogin) {
         return true;
       }
@@ -43,6 +41,7 @@ const PrivateRoute: FC<Porps> = ({
 
   // 若登录。 跳转
   if (meta?.isLogintoHome && isLogin) {
+
     const redirectUrl = qs.parse(location.search).redirectUrl as string;
     const url = redirectUrl || "/home/index" + location.search;
     return <Redirect to={url} />;

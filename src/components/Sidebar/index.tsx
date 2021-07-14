@@ -3,7 +3,7 @@ import { Layout, Menu } from "antd";
 import { HomeSiderMenuList } from "./menu";
 import { IHomeState } from "../Type";
 import { RouteComponentProps, withRouter, Link } from "react-router-dom";
-import { CSSProperties } from "react";
+import { SiderStyle } from "./style"
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
@@ -94,7 +94,3 @@ const MySidebar: FC<Props> = ({ location, collapsed }) => {
 
 export default withRouter(MySidebar);
 
-const SiderStyle: CSSProperties = {
-  background: "#304156",
-  userSelect: "none",
-};

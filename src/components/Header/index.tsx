@@ -1,8 +1,8 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Layout, Popover, Avatar } from "antd";
 import { UserState, setUserInfo } from "src/store/module/user";
 import { IHomeState } from "../Type";
-import {  RouteComponentProps,withRouter } from "react-router-dom";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -18,27 +18,30 @@ import {
   signout,
 } from "./style";
 import { removeToken } from "src/utils/cookie";
-import { connect, DispatchProp } from "react-redux";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+
 const { Header } = Layout;
 
 type Props = ReturnType<typeof mapStateToProps> &
   IHomeState &
-  DispatchProp &
-  RouteComponentProps 
+  RouteComponentProps;
 
-const MyHeader: FC<Props> = ({ collapsed, setCollapsed, userInfo ,dispatch}) => {
-  const PopoverContent = (
-    <div style={{width:"200px"}}>
-      <div style={signout} onClick={() => logout()}>
-        <PoweroffOutlined style={logoutStyle} />
-        退出
-      </div>
+// avatar OPT
+const PopoverContent = (
+  <div style={{ width: "200px" }}>
+    <div style={signout} onClick={() => logout}>
+      <PoweroffOutlined style={logoutStyle} />
+      退出
     </div>
-  );
-  // 登出
-  const logout = async () => {
-    removeToken();
-    dispatch(setUserInfo({
+  </div>
+);
+
+//登出
+const logout = async (dispatch: Dispatch) => {
+  removeToken();
+  dispatch(
+    setUserInfo({
       isLogin: false,
       userInfo: {
         account: "",
@@ -46,10 +49,18 @@ const MyHeader: FC<Props> = ({ collapsed, setCollapsed, userInfo ,dispatch}) => 
         uid: null,
         role: 0,
         location: "",
-        token:""
-      }
-    }))
-  };
+        token: "",
+      },
+    })
+  );
+};
+const MyHeader: FC<Props> = ({ collapsed, setCollapsed, userInfo }) => {
+  useEffect(() => {
+    console.log("header");
+    console.log("collapsed", collapsed);
+    console.log("userInfo", userInfo);
+  });
+
   return (
     <Header>
       <div style={divStyle}>

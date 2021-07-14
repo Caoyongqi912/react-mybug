@@ -3,12 +3,13 @@ import { IRouteProps } from "./type";
 
 const routesMap: IRouteProps[] = [
   {
-    path: "/login",
+    path: ["/login", "/"],
     exact: true,
     component: React.lazy(() => import("../views/Login")),
     meta: {
-      auth: true,
+      auth: false,
       title: "login",
+      // 如果当前登录状态跳转到后台首页
       isLogintoHome: true,
     },
   },
@@ -23,13 +24,21 @@ const routesMap: IRouteProps[] = [
       {
         path: "/home/index",
         exact: true,
-        component: "",
+        component: React.lazy(() => import("../views/Home")),
         meta: {
-          title: "index",
-          auth: true, 
+          title: "MyBug",
+          auth: true,
         },
       },
     ],
+  },
+  {
+    path: "*",
+    component: React.lazy(()=>import ("../views/Exe")),
+    meta: {
+      auth: false,
+      title: "404",
+    },
   },
 ];
 

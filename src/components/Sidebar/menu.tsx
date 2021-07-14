@@ -13,7 +13,7 @@ export const HomeSiderMenuList = [
   {
     path: "/home/index",
     icon: <HomeOutlined />,
-    name: "index",
+    name: "首页",
   },
   {
     path: "/home/user",
@@ -25,5 +25,5 @@ export const HomeSiderMenuList = [
         name: "userInfo",
       },
     ],
-  },
+  }
 ];
